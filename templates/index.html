@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Distributed Rampage</title>
+	</head>
+	<body>
+		<canvas id="screen" width="256" height="240"></canvas>
+		<pre id="status"></pre>
+		<script src="/jsnes/lib/jquery-1.4.2.min.js"></script>
+		<script src="/jsnes/lib/dynamicaudio-min.js"></script>
+		<script src="/jsnes/jsnes.js"></script>
+		<script src="/jsnesui.js"></script>
+		<script type="text/javascript">
+				$(function() {
+						var nes = new JSNES({
+							swfPath: '/jsnes/lib/',
+							enableSound: true,
+							ui: DRampageUI
+						});
+
+						$.ajax({
+								url: "/rampage.nes",
+								xhr: function() {
+										var xhr = $.ajaxSettings.xhr();
+										if (typeof xhr.overrideMimeType !== 'undefined') {
+												// Download as binary
+												xhr.overrideMimeType('text/plain; charset=x-user-defined');
+										}
+										self.xhr = xhr;
+										return xhr;
+								},
+								complete: function(xhr, status) {
+										var i, data;
+										if (JSNES.Utils.isIE()) {
+												var charCodes = JSNESBinaryToArray(
+														xhr.responseBody
+												).toArray();
+												data = String.fromCharCode.apply(
+														undefined, 
+														charCodes
+												);
+										}
+										else {
+												data = xhr.responseText;
+										}
+										nes.loadRom(data);
+										nes.start();
+								}
+						});
+
+				});
+		</script>
+	</body>
+</html>
