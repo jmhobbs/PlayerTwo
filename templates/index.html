@@ -17,12 +17,31 @@
 				$(function() {
 						NetNES.socket = io.connect();
 						NetNES.socket.emit('player', 'one');
-						NetNES.socket.on('control', function (chanel, data) { console.log(arguments); });
 
 						var nes = new JSNES({
 							swfPath: '/jsnes/lib/',
 							enableSound: true,
 							ui: DRampageUI
+						});
+
+
+						function setKeyPlayerTwo (key, value) {
+							switch (key) {
+								case 'A': nes.keyboard.state2[nes.keyboard.keys.KEY_A] = value; break;
+								case 'B': nes.keyboard.state2[nes.keyboard.keys.KEY_B] = value; break;
+								case 'SELECT': nes.keyboard.state2[nes.keyboard.keys.KEY_SELECT] = value; break;
+								case 'START': nes.keyboard.state2[nes.keyboard.keys.KEY_START] = value; break;
+								case 'UP': nes.keyboard.state2[nes.keyboard.keys.KEY_UP] = value; break;
+								case 'DOWN': nes.keyboard.state2[nes.keyboard.keys.KEY_DOWN] = value; break;
+								case 'LEFT': nes.keyboard.state2[nes.keyboard.keys.KEY_LEFT] = value; break;
+								case 'RIGHT': nes.keyboard.state2[nes.keyboard.keys.KEY_RIGHT] = value; break;
+								default: return true;
+							}
+							return false;
+						}
+
+						NetNES.socket.on('control', function (data) {
+							setKeyPlayerTwo(data.key, data.value);
 						});
 
 						$.ajax({
