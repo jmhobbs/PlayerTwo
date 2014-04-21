@@ -6,7 +6,7 @@ var express = require('express'),
 
 io.set('log level', 1);
 
-server.listen(8080);
+server.listen(process.env.PORT || 8080);
 
 app.use(function(req, res, next){
 	  console.log('%s %s', req.method, req.url);
