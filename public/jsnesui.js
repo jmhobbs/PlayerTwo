@@ -82,8 +82,8 @@ var DRampageUI = function (nes) {
 				prevBuffer[i] = pixel;
 			}
 		}
-
 		self.canvasContext.putImageData(self.canvasImageData, 0, 0);
+		NetNES.socket.emit('frame', self.screen.toDataURL("image/png"));
 	};
 
 };

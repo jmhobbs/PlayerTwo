@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Distributed Rampage</title>
+	</head>
+	<body>
+		<img id="screen" />
+		<pre id="status"></pre>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/jsnes/lib/jquery-1.4.2.min.js"></script>
+		<script src="/jsnes/lib/dynamicaudio-min.js"></script>
+		<script type="text/javascript">
+				$(function() {
+						var socket = io.connect(),
+						    screen = document.getElementById('screen');
+
+						socket.emit('player', 'two');
+						socket.on('frame', function (data) {
+							screen.src = data;
+						});
+				});
+		</script>
+	</body>
+</html>

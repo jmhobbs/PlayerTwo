@@ -6,12 +6,18 @@
 	<body>
 		<canvas id="screen" width="256" height="240"></canvas>
 		<pre id="status"></pre>
+		<script src="/socket.io/socket.io.js"></script>
 		<script src="/jsnes/lib/jquery-1.4.2.min.js"></script>
 		<script src="/jsnes/lib/dynamicaudio-min.js"></script>
 		<script src="/jsnes/jsnes.js"></script>
 		<script src="/jsnesui.js"></script>
 		<script type="text/javascript">
+			var NetNES = {};
+
 				$(function() {
+						NetNES.socket = io.connect();
+						NetNES.socket.emit('player', 'one');
+
 						var nes = new JSNES({
 							swfPath: '/jsnes/lib/',
 							enableSound: true,
@@ -19,7 +25,7 @@
 						});
 
 						$.ajax({
-								url: "/rampage.nes",
+								url: "/roms/rampage.nes",
 								xhr: function() {
 										var xhr = $.ajaxSettings.xhr();
 										if (typeof xhr.overrideMimeType !== 'undefined') {

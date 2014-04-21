@@ -16,9 +16,24 @@ app.get('/', function(req, res){
 	  res.sendfile(__dirname + '/templates/index.html');
 });
 
+app.get('/player-two', function(req, res){
+	  res.sendfile(__dirname + '/templates/player-two.html');
+});
+
+
 io.sockets.on('connection', function (socket) {
-	socket.emit('news', { hello: 'world' });
-	socket.on('my other event', function (data) {
-		console.log(data);
+	socket.on('player', function (data) {
+		if(data === "two") {
+			socket.join('player-two');
+			socket.on('control', function (data) {
+				io.sockets.in('player-one').emit('control', data);
+			});
+		}
+		else {
+			socket.join('one');
+			socket.on('frame', function (data) {
+				io.sockets.in('player-two').emit('frame', data);
+			});
+		}
 	});
 });
