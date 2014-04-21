@@ -29,7 +29,6 @@ io.sockets.on('connection', function (socket) {
 		if(data === "two") {
 			socket.join('player-two');
 			socket.on('control', function (data) {
-				console.log('control', data);
 				io.sockets.in('player-one').emit('control', data);
 			});
 		}
