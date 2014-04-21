@@ -17,6 +17,7 @@
 				$(function() {
 						NetNES.socket = io.connect();
 						NetNES.socket.emit('player', 'one');
+						NetNES.socket.on('control', function (chanel, data) { console.log(arguments); });
 
 						var nes = new JSNES({
 							swfPath: '/jsnes/lib/',

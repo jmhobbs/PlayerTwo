@@ -3,6 +3,9 @@ var express = require('express'),
      server = require('http').createServer(app),
          io = require('socket.io').listen(server);
 
+
+io.set('log level', 1);
+
 server.listen(8080);
 
 app.use(function(req, res, next){
@@ -26,11 +29,12 @@ io.sockets.on('connection', function (socket) {
 		if(data === "two") {
 			socket.join('player-two');
 			socket.on('control', function (data) {
+				console.log('control', data);
 				io.sockets.in('player-one').emit('control', data);
 			});
 		}
 		else {
-			socket.join('one');
+			socket.join('player-one');
 			socket.on('frame', function (data) {
 				io.sockets.in('player-two').emit('frame', data);
 			});

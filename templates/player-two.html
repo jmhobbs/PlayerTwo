@@ -18,6 +18,38 @@
 						socket.on('frame', function (data) {
 							screen.src = data;
 						});
+
+
+						function setKey (key, value) {
+							switch (key) {
+								case 88: socket.emit('control', {key: 'A', value: value}); break;      // X
+								case 89: socket.emit('control', {key: 'B', value: value}); break;      // Y (Central European keyboard)
+								case 90: socket.emit('control', {key: 'B', value: value}); break;      // Z
+								case 17: socket.emit('control', {key: 'SELECT', value: value}); break; // Right Ctrl
+								case 13: socket.emit('control', {key: 'START', value: value}); break;  // Enter
+								case 38: socket.emit('control', {key: 'UP', value: value}); break;     // Up
+								case 40: socket.emit('control', {key: 'DOWN', value: value}); break;   // Down
+								case 37: socket.emit('control', {key: 'LEFT', value: value}); break;   // Left
+								case 39: socket.emit('control', {key: 'RIGHT', value: value}); break;  // Right
+								default: return true;
+							}
+							return false;
+						}
+
+						$(document)
+							.bind('keydown', function(evt) {
+								if(! setKey(evt.keyCode,0x41) ) {
+									evt.preventDefault();
+								}
+							})
+							.bind('keyup', function(evt) {
+								if(! setKey(evt.keyCode, 0x40) ) {
+									evt.preventDefault();
+								}
+							})
+							.bind('keypress', function(evt) {
+								evt.preventDefault();
+							});
 				});
 		</script>
 	</body>
